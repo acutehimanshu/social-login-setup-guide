@@ -1,5 +1,7 @@
 # How to Get Apple Client ID for Website Login
 
+## Overview
+
 > This guide explains how to configure Sign in with Apple for a website and obtain the Services ID that your developer may use as the Apple Client ID.
 
 Apple website login is more complicated than some other social login providers because Apple requires the website to be connected to an Apple application in the Apple Developer account.
@@ -141,7 +143,7 @@ The **Return URL** is the address where Apple sends the user after Apple login. 
 - Host, such as `example.com`
 - Path, such as `/auth/apple/callback`
 
-## Who Does What?
+## Client vs Developer Responsibilities
 
 ### Client does
 
@@ -669,6 +671,50 @@ Apple supports server-to-server notifications for advanced account changes.
 This is an advanced developer feature and is not required simply to create the website's Apple Client ID.
 
 Ask your developer if this applies to your project.
+
+## FAQ
+
+### What is the Apple Client ID?
+
+For website Sign in with Apple, the Apple Client ID is usually the Services ID created in Apple Developer.
+
+### What is an Apple Services ID?
+
+It is the website identifier Apple uses for Sign in with Apple. It is the value your developer may use as APPLE_CLIENT_ID.
+
+### Is the Services ID the same as the Apple App ID?
+
+No. The App ID identifies the Apple app; the Services ID identifies the website or web service connecting to Apple.
+
+### What is the Return URL?
+
+It is the exact address where Apple sends the user after authentication. It must match the website configuration exactly.
+
+### Do I need to send the Apple private key?
+
+Only if your developer specifically requests it and gives you a secure transfer method. Private keys should never be shared publicly.
+
+### What is the Team ID?
+
+It identifies the Apple Developer team. It is required only for some server-side implementations.
+
+### Why does Apple login fail on the return URL?
+
+This usually means the Return URL does not match the exact value configured in Apple Developer.
+
+### Why does the website domain fail to verify?
+
+Usually because the domain is incorrect, not verified, or not associated with the correct Services ID and App ID.
+
+### What should I send to my developer?
+
+Usually:
+
+```text
+APPLE_CLIENT_ID=YOUR_SERVICES_ID
+```
+
+Only send additional Apple credentials if the developer specifically requests them through a secure transfer method.
 
 ## Final Checklist
 

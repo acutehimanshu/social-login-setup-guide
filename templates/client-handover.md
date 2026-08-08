@@ -1,50 +1,68 @@
-# Social Login Credential Handover
+# Social Login Client Handover
 
-Website:
+Use this form to return the final provider values required for the website login configuration.
+
+## Project information
 
 ```text
+Website:
+____________________
+
+Environment:
+Production / Staging / Local development
+
+Client contact:
+____________________
+
+Developer contact:
 ____________________
 ```
 
-## Google
+## Required credentials
+
+### Google
 
 ```text
 GOOGLE_CLIENT_ID=
 ```
 
-## Apple
+### Apple
 
 ```text
 APPLE_CLIENT_ID=
 ```
 
-## Facebook
+### Facebook
 
 ```text
 FACEBOOK_CLIENT_ID=
 ```
 
-## Additional Credentials
+## Additional provider-specific credentials
 
-If the developer has requested additional provider credentials:
+Only provide additional credentials specifically requested by the developer, and only through the secure transfer method they require.
 
+```text
 Provider:
+____________________
 
-```text
+Credential requested by developer:
+____________________
+
+Secure transfer method used:
 ____________________
 ```
 
-Credential:
-
-```text
-____________________
-```
-
-Do not include passwords, OTP codes, recovery codes, private keys, access tokens, refresh tokens, or other secrets in this template.
+> Do not paste private keys, secrets, passwords, OTP codes, recovery codes, access tokens, or refresh tokens into a public Markdown document.
 
 ## Confirmation
 
-- [ ] Google configured
-- [ ] Apple configured
-- [ ] Facebook configured
-- [ ] Credentials sent to developer
+```text
+I confirm that the values above are the correct provider identifiers for this website and environment.
+```
+
+- [ ] Google value returned
+- [ ] Apple value returned
+- [ ] Facebook value returned
+- [ ] Any additional requested credentials were only shared securely
+- [ ] No secret or password was pasted into this document

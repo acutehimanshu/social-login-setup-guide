@@ -1,5 +1,7 @@
 # How to Get a Google Client ID for Website Login
 
+## Overview
+
 This guide explains how a website owner or non-technical client can create the Google login credentials required by a developer.
 
 The goal is to get the Google Client ID for website login. Your developer will use it to configure Google Sign-In, Google OAuth setup, or another Google login flow on your website.
@@ -36,6 +38,12 @@ This is the main value your developer is asking you for.
 Depending on how your website is built, your developer may separately need another credential, such as a Client Secret.
 
 Only send additional credentials if your developer specifically requests them through a secure method. Do not paste secrets into GitHub issues, public repositories, public comments, or shared documents that are not protected.
+
+## Why is this provider different?
+
+Google login is usually a standard OAuth web-client setup. The main value you usually need to provide is the Client ID, and some implementations may also require a Client Secret on the server side.
+
+The exact setup depends on how your developer has implemented login, but the client-side deliverable is still usually the Google Client ID.
 
 ## Before You Start
 
@@ -113,6 +121,24 @@ Small differences can matter, including:
 - A different domain
 - A different path
 - A missing or extra trailing slash
+
+## Client vs Developer Responsibilities
+
+### Client does
+
+- Own or access the Google Cloud project or Google account used for login
+- Create or configure the Google OAuth client
+- Add the required website and redirect configuration
+- Copy the Google Client ID
+- Return the requested credential to the developer
+
+### Developer does
+
+- Configure the website login flow
+- Add the Client ID to the correct code or config
+- Add any server-side OAuth logic if required
+- Handle redirect and callback behavior in the website
+- Request additional credentials only when necessary
 
 ## Step 1 — Open Google Cloud
 
@@ -426,6 +452,46 @@ Recovery codes
 ```
 
 Never publish private values in GitHub, public issue trackers, screenshots, public chat channels, or documentation.
+
+## FAQ
+
+### What is a Google Client ID?
+
+It is the unique ID Google gives to your website or application so Google knows which website is requesting login.
+
+### What is a Client Secret?
+
+A Client Secret is a sensitive credential used by an app or backend service. It is different from the Client ID and should be protected.
+
+### Do I need to send the Client Secret?
+
+Only if your developer specifically requests it and provides a secure transfer method. Some browser-based setups do not use one.
+
+### What is a redirect URI?
+
+It is the address where Google sends the browser after the user completes login. It must match the website configuration exactly.
+
+### Why does Google login fail with redirect_uri_mismatch?
+
+This usually means the redirect URI configured in Google Cloud does not exactly match what the website is using.
+
+### Can I use localhost during development?
+
+Sometimes, but only for local testing with the developer's exact configuration. Production login should use the real website URL.
+
+### Why does Google login work locally but not on production?
+
+Usually because the live domain or redirect URI differs from the local development setup.
+
+### What should I send to my developer?
+
+Usually:
+
+```text
+GOOGLE_CLIENT_ID=YOUR_CLIENT_ID
+```
+
+Only send additional credentials if the developer requests them through a secure transfer method.
 
 ## Final Checklist
 

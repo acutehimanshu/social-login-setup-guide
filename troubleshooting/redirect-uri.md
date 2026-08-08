@@ -1,65 +1,92 @@
-# OAuth Redirect URI Explained
+# Redirect URI Troubleshooting
 
-An OAuth redirect URI is the address where Google, Apple, Facebook, or another provider sends the user after login.
+A redirect URI is the exact URL a provider sends the user back to after login.
 
-Some providers call this a redirect URI. Others may call it a callback URL, return URL, or redirect URL. Do not assume every provider uses exactly the same wording.
+Some providers call it a redirect URI. Some call it a callback URL or return URL. The idea is the same: it is the page where the login flow should continue after the user is authenticated.
 
-## Simple Flow
+## The basic flow
 
 ```text
-User
- ↓
 Website
- ↓
-Google / Apple / Facebook
- ↓
-User logs in
- ↓
-Provider sends user back
- ↓
-Redirect / Callback URL
- ↓
-Website completes login
+↓
+Provider
+↓
+Login
+↓
+Redirect URI
+↓
+Website
 ```
 
-## Why the URL must match exactly
+The user begins on the website, goes to the provider, signs in, and then the provider sends the user back to a configured page on the website.
 
-The provider checks the redirect URI for safety. It wants to make sure users are sent back only to an address that was approved in the provider dashboard.
+## Why exact matching matters
 
-The URL usually must match exactly. A small difference can cause login to fail.
+Providers usually compare the redirect URI to the one they were configured to accept. If even one piece is different, the login may fail.
 
-Common differences include:
+The most common exact-match problems are:
 
-- `http` instead of `https`
-- A missing or extra trailing slash
-- A different subdomain
-- A different path
-- A local testing URL used on the production website
+- `http` vs `https`
+- `example.com` vs `www.example.com`
+- a different subdomain
+- a different path
+- a missing or extra trailing slash
+- local development URL vs production URL
+- a different environment such as staging vs live
 
 ## Examples
 
-These are examples only. Do not copy them unless your developer confirms they are correct for your website.
-
-Example website:
+These are examples only and should not be copied without confirmation from the developer.
 
 ```text
-https://example.com
+https://example.com/auth/callback
+https://www.example.com/auth/callback
+https://app.example.com/auth/callback
+http://localhost:3000/auth/callback
 ```
 
-Example redirect URI:
+If the site uses one of these values, the provider dashboard must match it exactly.
 
-```text
-https://example.com/auth/callback/google
-```
+## What usually causes the problem?
 
-Example local testing redirect URI:
+Most redirect URI issues happen because one of these is true:
 
-```text
-http://localhost:3000/auth/callback/google
-```
+- the website is using a different URL than the one configured in the provider dashboard
+- a staging URL was configured instead of the live URL
+- a local development URL is still being used in production
+- the developer changed the callback route but did not update the provider configuration
+- the domain or subdomain differs from the approved value
 
-## Important Rule
+## What the client can check
 
-Never guess the redirect URI or callback URL.
+- confirm the exact live website URL
+- confirm whether the site uses `www` or not
+- check whether it is `http` or `https`
+- review whether the value is a local or production domain
+- confirm the path after the domain matches the developer’s instructions
 
-The developer should provide the exact URL that must be entered in the provider dashboard.
+## What the developer should check
+
+- confirm the exact redirect URI for each environment
+- verify the callback route used by the website
+- compare the code route to the provider dashboard entry
+- make sure the correct domain is approved for production use
+- confirm there are no duplicate or old redirect values left over in the provider app
+
+## Client reminder
+
+Do not guess the redirect URI. The developer should provide the exact value that must be entered in the provider dashboard.
+
+## Security reminder
+
+If an error message includes a token, code, secret, or other sensitive value, remove it before sharing the error publicly.
+
+### Related guides
+
+- [Social Login Troubleshooting Center](README.md)
+- [Google guide](../docs/google/README.md)
+- [Apple guide](../docs/apple/README.md)
+- [Facebook guide](../docs/facebook/README.md)
+- [Glossary](../docs/glossary.md)
+
+[Back to main README](../README.md)

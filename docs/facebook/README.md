@@ -1,611 +1,647 @@
-# How to Get Facebook App ID for Website Login
+# Facebook Login Setup Guide
 
-> This guide explains how to create and configure a Meta application for Facebook Login and obtain the App ID required by your website developer.
+## Overview
 
-Facebook Login is managed through Meta's developer platform. Your developer may call the required value:
+This guide explains the basic setup steps for a website that uses Facebook Login through Meta for Developers. It is written for a non-technical client and is intentionally text-only.
 
-```text
-FACEBOOK_CLIENT_ID=
-```
-
-For Facebook Login, this value is generally the application's **App ID**.
-
-The App ID identifies your Meta application. Your developer may use this value in the website configuration as `FACEBOOK_CLIENT_ID`.
-
-Do not confuse the App ID with:
-
-- App Secret
-- Facebook Page ID
-- Business Manager ID
-- Pixel ID
-- Ad Account ID
-- User ID
-
-These are different things.
+The goal is to help you understand what to do, what information to give to your developer, and which value you usually need to copy from Meta.
 
 ## What are we trying to get?
 
-Your developer is usually asking for:
+Your developer may ask for this value:
 
-```text
 FACEBOOK_CLIENT_ID=
-```
 
-For Facebook Login, your developer will usually use the Meta App ID as the Client ID.
+For Facebook Login, this usually maps to the Meta App ID.
 
 Example only:
 
-```text
 FACEBOOK_CLIENT_ID=123456789012345
-```
 
-Do not copy this example.
+This example is not a real credential. It is only a placeholder format.
 
-The App ID is not:
+## App ID vs App Secret
 
-- Your Facebook password
-- Your Facebook user ID
-- Your Facebook Page ID
-- Your Business Manager ID
+This is the most important distinction.
 
-## What is a Meta App?
+App ID
+→ identifies the Meta application
 
-A **Meta App** is a configuration container created in Meta for Developers. It tells Meta which website or application is using Facebook Login.
+App Secret
+→ sensitive credential used by the application/server
 
-In simple terms, it is the place where you configure Facebook Login for your website.
+The App ID is a safe identifier. The App Secret is a secret credential and must be handled carefully.
 
-A Meta App can contain:
+Do not confuse your App ID with:
 
-- App ID
+- Facebook user ID
+- Facebook Page ID
+- Business Manager ID
+- Ad Account ID
+- Pixel ID
 - App Secret
-- Facebook Login configuration
-- Website settings
-- OAuth settings
-- Other Meta products or features
 
-You do not need to understand every Meta product. For this guide, the main goal is to configure Facebook Login for a website and copy the App ID.
+## What is a Meta app?
 
-## Before You Start
+A Meta app is the application record created in Meta for Developers. It is the place where the business configures Facebook Login and related settings for the website.
 
-Make sure you have:
+You do not need to master every Meta product or every developer term. For a normal website login flow, the main goal is usually:
 
-```text
-[ ] Facebook account
-[ ] Access to Meta for Developers
-[ ] Website URL
-[ ] Developer-provided OAuth redirect URL
-[ ] Privacy Policy URL
-[ ] Terms of Service URL if required
-[ ] Company/business information if required
-[ ] Developer's requested credential list
-```
+- create the Meta app
+- configure Facebook Login
+- enter the developer-provided redirect URI
+- copy the App ID
+- send the App ID to the developer
 
-The exact requirements can depend on Meta's current app setup, the products/features being used, requested permissions, and whether the application is still being tested or is ready for public users.
+## Facebook Login for a Website
 
-## Ask Your Developer for These Details
+Facebook Login for a website allows a visitor to sign in with their Facebook account.
 
-Never guess the OAuth Redirect URI.
+It allows a website to confirm that the visitor is who they say they are, using Facebook as the sign-in check.
 
-Ask your developer for the exact values before creating or configuring the Meta App.
+High-level flow:
 
-| Information | Example | Who provides it |
-| --- | --- | --- |
-| Website URL | `https://example.com` | Developer |
-| OAuth Redirect URI | `https://example.com/auth/facebook/callback` | Developer |
-| App Name | `My Website` | Client / Developer |
-| Privacy Policy URL | `https://example.com/privacy` | Client / Developer |
-| Terms URL | `https://example.com/terms` | Client / Developer |
-| Required credential | `FACEBOOK_CLIENT_ID` | Developer |
+Website
+↓
+Facebook
+↓
+User logs in
+↓
+Facebook sends the user back
+↓
+Website completes login
 
-The **OAuth Redirect URI** is the address where Meta sends the user after Facebook Login. The developer must provide the exact URL.
+The developer normally builds the website flow. The client normally creates or configures the Meta app and provides the required app information.
 
-## Who Does What?
-
-### Client does
-
-```text
-Create/configure Meta Developer application
-Configure website information
-Configure Facebook Login
-Provide App ID to developer
-```
+## Client vs Developer Responsibilities
 
 ### Developer provides
 
-```text
-Website URL
-OAuth Redirect URI
-Required credential list
-```
+- Website URL
+- Exact OAuth redirect URI
+- Any required Meta configuration information
+- Required credential list
 
-### Developer does
+### Client does
 
-```text
-Website integration
-Backend configuration
-OAuth implementation
-Client Secret configuration if required
-Testing
-Production deployment
-```
+- Access Meta for Developers
+- Create or update the Meta application
+- Configure website information
+- Configure Facebook Login
+- Enter the developer-provided redirect URI
+- Copy the App ID
+- Return the requested credential
 
-This separation matters. The client should own the Meta application when it belongs to their business, while the developer should handle the website code and login implementation.
+### Developer does afterward
+
+- Configure environment variables
+- Configure backend/frontend
+- Configure App Secret securely if required
+- Test authentication
+- Handle production deployment
+
+This split matters. The client usually owns the Meta app and the business relationship with Meta. The developer usually handles the actual website implementation.
+
+## Before you start
+
+Have these ready before creating the app:
+
+- Facebook account
+- Access to Meta for Developers
+- Website URL
+- Developer-provided OAuth redirect URI
+- Privacy Policy URL
+- Terms of Service URL if required
+- Business information if Meta requests it
+- Developer-specified credential list
+
+The exact requirements can vary depending on the app, requested permissions, and whether the app is still being tested or is intended for public users.
 
 ## Step 1 — Open Meta for Developers
 
-Open the official [Meta for Developers website](https://developers.facebook.com/).
+Open the official Meta for Developers site:
 
-1. Open the website.
-2. Log in with the Facebook account that should manage the application.
-3. Use a company/business-owned account where appropriate.
-4. Complete any Meta developer registration or verification steps Meta requests.
+https://developers.facebook.com/
 
-Do not share your Facebook password, 2FA code, or recovery codes with your developer.
+Then:
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+1. Log in with the Facebook account that should manage the application.
+2. Use a company or business-owned account where appropriate.
+3. Complete any registration or account steps Meta asks for.
+4. Go to the app dashboard.
 
-## Step 2 — Open My Apps
+Do not share your Facebook password, two-factor authentication codes, recovery codes, or other account secrets with anyone.
 
-Open the app dashboard from Meta for Developers. Meta commonly refers to this area as **My Apps** or the app dashboard.
+## Step 2 — Open the app dashboard
 
-Meta periodically changes its developer dashboard. The exact buttons may look slightly different, but the goal is to create a developer application for Facebook Login.
+In Meta for Developers, open the app dashboard or My Apps area.
 
-If you already have a Meta App for this website, select it instead of creating a duplicate.
+Meta may rename or reposition buttons from time to time, but the goal is to create or open the application tied to this website.
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+If the website already has a Meta app, use that app instead of creating a duplicate.
 
-## Step 3 — Create a Meta App
+## Step 3 — Create a Meta app
 
-Choose the current option to create a new app.
+Use the current Create App flow in Meta for Developers.
 
-Meta may ask you to choose a use case or app category. Choose the option that supports Facebook Login for user authentication.
+Meta may ask you to choose a use case. For a standard website using Facebook Login, choose the use case that matches authenticating people and requesting data for login.
 
-In current Meta setup flows, this may appear as a use case similar to:
+The exact wording may change in the current Meta dashboard, but the appropriate choice is the one used for Facebook Login for a website or app user authentication.
 
-```text
-Authenticate and request data from users with Facebook Login
-```
+Do not select a business-specific option unless your developer specifically says the project needs it.
 
-Use the wording shown in your Meta dashboard. Do not choose Facebook Login for Business unless your developer says the project specifically needs it.
-
-Enter the required application information, such as:
+Meta may ask for:
 
 - App name
 - Contact email
-- Business portfolio, if Meta asks and it applies
-- Other setup details Meta requests
+- Business portfolio information if relevant
+- Other setup details required by the current dashboard
 
-The **App name** is a label that helps you and users recognize the application.
-
-The **contact email** should be an email address your business or team checks.
-
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+The app name is only a label for the app. It is not the same as the App ID.
 
 ## Step 4 — Add Facebook Login
 
-Add or configure **Facebook Login** for the app.
+Once the app is created, add or configure Facebook Login.
 
-Facebook Login is the product that lets users log in to your website with their Facebook account.
+For a normal website, you usually want the basic Facebook Login option used for website sign-in.
 
-Meta may show more than one login-related product, such as:
+Meta may also show options such as Facebook Login for Business. Do not use a business-specific option unless the developer or business requirement clearly calls for it.
 
-- Facebook Login
-- Facebook Login for Business
+## Step 5 — Configure the website
 
-For a normal consumer website login, the basic Facebook Login product/use case is generally the appropriate choice. Facebook Login for Business is different and should be used only when the developer or business requirement calls for it.
+Meta may ask for the website URL or platform details.
 
-If you are unsure, ask your developer before selecting a business-specific product.
-
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
-
-## Step 5 — Configure Website
-
-Meta may ask for your website URL or platform information.
-
-Use the exact production website URL provided by your developer.
+Use the exact production URL your developer gives you.
 
 Example only:
 
-```text
 https://example.com
-```
 
-Do not copy this example. Do not invent the website URL.
+Do not invent a URL. Use the real website URL only.
 
-If your website has separate staging and production environments, ask your developer which URL should be configured.
+If you have separate development and production URLs, ask the developer which one should be configured.
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+## Step 6 — Website URL, App Domain, and redirect URI
 
-## Step 6 — Configure App Domains
+These three items are related but not the same.
 
-Meta app settings may include **App Domains**.
+Website URL
+→ the public address of the website
 
-App Domains tells Meta which domains are associated with your application.
+App domain
+→ the domain associated with the app in Meta
+
+OAuth redirect URI
+→ the exact address where Facebook sends the user back after login
 
 Example only:
 
-```text
+Website URL:
+https://example.com
+
+App Domain:
 example.com
-```
 
-Do not copy this example.
+OAuth redirect URI:
+https://example.com/auth/facebook/callback
 
-For App Domains, Meta commonly expects the domain itself, not the full URL with `https://`. Follow the format shown in the current Meta dashboard and ask your developer if you are unsure.
+These should match the real production site information provided by the developer. They are not interchangeable.
+
+### App Domains
+
+Some Meta app configuration screens include App Domains. The exact field name can change over time and may appear differently in the current dashboard.
+
+Use the real domain owned by the business. For example, if the website is hosted at example.com, that is the kind of value Meta expects in the domain-related field.
 
 Do not add domains you do not own or are not authorized to use.
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
-
 ## Step 7 — Configure Privacy Policy
 
-Meta may require a Privacy Policy URL for applications that use Facebook Login, especially when the app is made available to public users.
+Meta may require a Privacy Policy URL for apps that use Facebook Login, especially when the app is available to public users.
 
 Example only:
 
-```text
 https://example.com/privacy-policy
-```
 
-Do not copy this example. Use the actual website Privacy Policy URL.
+Use the real Privacy Policy URL for the website, not the example.
 
-If your website does not have a privacy policy yet, ask the business owner and developer before trying to publish the app.
+If the business does not yet have a Privacy Policy, the business owner and developer should confirm how this should be handled before the app is used publicly.
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+Do not assume this is always required for every possible Meta setup, but current Meta app configuration commonly expects a valid Privacy Policy URL when the app is being used more broadly or when additional requirements apply.
 
-## Step 8 — Configure Terms of Service
+## Step 8 — Terms of Service
 
-Meta app configuration may include a Terms of Service URL.
+Terms of Service may also appear in the app settings, depending on the current Meta setup and business requirements.
 
-Example only:
+This is not always required for a basic website login, but it may be required or recommended depending on the configuration, app permissions, and Meta requirements.
 
-```text
-https://example.com/terms
-```
+Use the real Terms of Service URL only if the website has one and Meta requires it.
 
-Do not copy this example. Use the actual Terms of Service URL if your website has one or if Meta requires it for the current configuration.
+## Step 9 — Configure the OAuth redirect URI
 
-Do not assume this field is required for every setup. Follow the current Meta dashboard requirements and ask your developer if you are unsure.
+This is one of the most important parts of the setup.
 
-## Step 9 — Configure Valid OAuth Redirect URI
-
-After the user logs in with Facebook, Meta needs to know where to send the user back to the website.
-
-This address is called:
-
-```text
-Valid OAuth Redirect URI
-```
+The redirect URI is the exact address where Facebook sends the user back after authentication.
 
 Example only:
 
-```text
 https://example.com/auth/facebook/callback
-```
 
-Do not copy this unless your developer gives you this exact URL.
+Important:
 
-The redirect URI must exactly match the URL used by the website.
+Never guess this URL. Ask the developer for the exact value.
 
-Small differences can cause login to fail, including:
+The redirect URI must match the website's configuration exactly. Common mismatches include:
 
-- `http` vs `https`
+- HTTP vs HTTPS
 - Wrong domain
 - Wrong subdomain
 - Wrong path
 - Missing or extra trailing slash
-- Localhost URL used for production
-- Production URL used for local testing
+- Localhost used in production
+- Production URL used in local testing
 
-If your developer gives you more than one redirect URI, enter each exact value according to the current Meta dashboard instructions.
+If the developer gives you more than one possible redirect URI, enter each exact value as directed by the current Meta dashboard.
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+## Step 10 — Copy the App ID
 
-## Step 10 — Find the App ID
+After the app and Facebook Login settings are configured, open the app dashboard and find the App ID.
 
-The App ID can usually be found in the Meta application's dashboard or basic app settings.
+This is the value your developer usually needs as the Facebook login client ID.
 
-Copy the App ID and use this format when sending it to your developer:
+Send it to the developer in this format:
 
-```text
 FACEBOOK_CLIENT_ID=YOUR_META_APP_ID
-```
 
 Example only:
 
-```text
 FACEBOOK_CLIENT_ID=123456789012345
-```
 
-Do not copy this example.
-
-The Meta App ID is the value your developer may use as `FACEBOOK_CLIENT_ID`.
-
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
+This is an example only. Do not use it as a real credential.
 
 ## Do I need to send the App Secret?
 
-The **App Secret** is different from the App ID.
+The App Secret is different from the App ID.
 
-```text
 App ID
-→ identifies the application
+→ identifies the Meta application
 
 App Secret
-→ secret credential used by the application/server
-```
+→ sensitive credential used by the application/server
 
-Whether the developer needs the App Secret depends on how Facebook Login is implemented.
+Whether the developer needs the App Secret depends on the login implementation.
 
-Do not publish or casually send the App Secret.
+The App Secret should never be published in:
 
-If the App Secret is required, transfer it only through the secure method your developer provides.
-
-Never place the App Secret in:
-
-- GitHub
 - README files
+- GitHub repositories
 - Public issues
-- Public comments
-- Screenshots
-- Unprotected shared documents
+- Public chat threads
+- Public screenshots
+- Unprotected documents
 
-> **Screenshot:** To be added after manual verification of the current Meta developer interface. Never include a real App Secret in a screenshot.
+If the developer specifically requests the App Secret, send it only through the secure method they provide.
 
 ## Development Mode vs Live Mode
 
-Meta apps can be in different modes while they are being built, tested, and released.
+Meta apps can be in different states while they are being configured and tested.
 
-### Development mode
+### Development
 
-Development mode means the application is still being tested or configured.
+Development mode is used while the app is being built and tested.
 
-Only approved people associated with the app, such as admins, developers, or testers, may be able to use certain app functionality.
+This is when the developer is testing the login flow and checking the app configuration.
 
-This is useful while the developer is testing Facebook Login before the website is available to normal users.
+Access may be restricted to people with the right app roles or testing access.
 
-### Live mode
+### Live
 
-Live mode means the application is available to normal users according to Meta's requirements.
+Live mode is used when the app is intended for ordinary public users.
 
-Switching to Live mode may require:
+The app may need to move to Live mode before real users can use it. This may depend on:
 
-- App configuration
-- Privacy Policy
-- Business verification where applicable
-- App Review for certain permissions/features
-- Other Meta requirements
+- app configuration
+- requested permissions
+- app review requirements
+- business verification requirements
+- other Meta requirements
 
-Do not assume every Facebook Login app requires Business Verification or App Review. The requirements depend on the app, permissions, products, and how the login is used.
-
-> **Screenshot:** To be added after manual verification of the current Meta developer interface.
-
-## App Roles and Test Users
-
-Meta applications can have people associated with the application for development and testing.
-
-Depending on the current Meta dashboard, these may include roles such as:
-
-- Admins
-- Developers
-- Testers
-
-During development, the developer may need to test Facebook Login before the app is made available to everyone.
-
-If Facebook Login works for the developer but not for a normal user, the app may still be in Development mode or the normal user may not have a testing role.
+Do not assume every Facebook Login app needs all of these steps. Requirements depend on the app's setup and the permissions/features it requests.
 
 ## Does Facebook Login require App Review?
 
-The answer depends on:
+Not automatically.
 
-- What permissions/data the app requests
-- Which Meta products are being used
-- Whether the application is being made available to public users
+The answer depends on what the app requests and who will use it.
 
-Basic login functionality may not require the same review as advanced permissions or additional Meta products.
+Meta's official documentation explains that App Review is required when the app will be used by people without a role on the app, and it may also be required for certain permissions or features.
 
-Do not assume Facebook Login always requires App Review.
+For many basic website login setups, the required review is minimal or not needed for the basic public_profile and similar login scenarios. But advanced permissions or extra features may trigger review.
 
-Ask your developer what permissions the website needs. Request only the permissions/data the website actually needs.
+The right answer is:
 
-## What information does Facebook Login provide?
+App Review is required only when Meta requires it for the permissions or app access the website is requesting.
 
-Facebook Login may provide information about the authenticated user depending on the permissions requested, the user's choices, and current Meta policies.
+## Does my business need Meta Business Verification?
 
-Your developer should request only the permissions/data that the website actually needs.
+Not always.
 
-Unnecessary permissions can create additional review requirements and may make users less comfortable during login.
+Business verification can be required depending on the app, permissions, features, and business configuration.
 
-## What to Send to Your Developer
+Meta's current guidance says business verification can be required for advanced access or certain app requirements. For ordinary website login, it is not automatically required for every basic setup.
 
-For the immediate requirement:
+If Meta asks for business verification, the business owner or authorized company representative should complete it.
 
-```text
-FACEBOOK_CLIENT_ID=YOUR_APP_ID
-```
+## App roles and testing
 
-Depending on the implementation, the developer may also request:
+Meta applications can include people with different roles for development and testing. Depending on the current Meta dashboard, these roles may be labeled in different ways, but they generally include admin and developer-type access.
 
-```text
-FACEBOOK_CLIENT_SECRET=
-```
+During development, the developer may ask the client to add test users or app roles so the app can be tested before public release.
 
-Only provide the App Secret if your developer specifically requests it and gives you a secure transfer method.
+If Facebook Login works for the developer but not for a normal user, the most common causes are:
 
-The App ID is not the same thing as the App Secret.
+- app is still in Development mode
+- the user is not in the required app role or testing access
+- the app has not yet been made available to public users
+- permissions or review requirements are still pending
 
-## Copy-Paste Handover Template
+## What to send to your developer
 
-```text
-Facebook Login Setup Completed
+The main handover usually looks like this:
 
-FACEBOOK_CLIENT_ID=________________________________
-```
+FACEBOOK_CLIENT_ID=YOUR_META_APP_ID
 
-```text
-Website:
-________________________________
+If your developer specifically requests the App Secret or another credential, use the secure transfer method they provide.
 
-Meta App Name:
-________________________________
+Do not send secrets in a public README, public chat, public issue, screenshot, or other non-private location.
 
-Meta App ID:
-________________________________
+## Troubleshooting
 
-Facebook Login configured:
-Yes / No
+### Problem 1 — Invalid OAuth redirect URI
 
-OAuth Redirect URI configured:
-Yes / No
+What the client sees:
 
-App mode:
-Development / Live
+Facebook Login fails after clicking the login button.
 
-Sent to developer:
-Yes / No
-```
+What it usually means:
 
-Do not paste the App Secret into this public template.
+The website's redirect URI does not exactly match the value configured in Meta.
+
+What the client can check:
+
+- HTTP vs HTTPS
+- Wrong domain
+- Wrong subdomain
+- Wrong path
+- Missing or extra trailing slash
+- Localhost used in production
+- Production URL used in local testing
+
+When to contact the developer:
+
+Ask the developer to compare the exact URL used by the website to the redirect URI in Meta.
+
+### Problem 2 — App is still in development mode
+
+What the client sees:
+
+The developer can log in, but other users cannot.
+
+What it usually means:
+
+The app may still be restricted to people with app roles or testing access.
+
+What the client can check:
+
+- App mode
+- Whether the app is intended for public users
+- Whether the user has the required role or access
+
+When to contact the developer:
+
+Ask whether the app is still being tested or whether it is ready to move to Live mode.
+
+### Problem 3 — Wrong App ID
+
+What the client sees:
+
+The developer says the Facebook Client ID is wrong or does not match the website.
+
+What it usually means:
+
+The wrong Meta app was selected, or the wrong App ID was copied.
+
+What the client can check:
+
+- Correct Meta app selected
+- App ID copied from the correct app dashboard
+- Website code or config is pointing at the correct app
+
+When to contact the developer:
+
+Ask the developer to confirm the exact App ID that should be used.
+
+### Problem 4 — Privacy Policy or business requirement not met
+
+What the client sees:
+
+Meta asks for additional app details or blocks public use.
+
+What it usually means:
+
+The app may still be missing required information, such as a valid Privacy Policy URL or a business-related requirement.
+
+What the client can check:
+
+- Privacy Policy URL exists
+- URL is correct and public
+- Business information is complete if Meta asks for it
+
+When to contact the developer:
+
+Ask whether the current Meta requirement belongs to the business, the app, or the permission setup.
+
+### Problem 5 — Review or verification requirement
+
+What the client sees:
+
+Meta asks for app review, verification, or additional business information.
+
+What it usually means:
+
+The app may be requesting permissions, products, or features that require additional Meta review or business verification.
+
+What the client can check:
+
+- Requested permissions
+- App mode
+- Meta dashboard messages
+- Whether the app is intended for public users
+
+When to contact the developer:
+
+Ask the developer which permissions are actually needed and whether the app is in a review or verification phase.
+
+### Problem 6 — Permission or scope issue
+
+What the client sees:
+
+Login succeeds, but the website does not receive the expected user information.
+
+What it usually means:
+
+The app may not be requesting the correct permission, or the permission may require review.
+
+What the client can check:
+
+- Requested permissions
+- Whether the user granted them
+- Whether the permission is approved or needs review
+
+When to contact the developer:
+
+Ask the developer to confirm the minimum required permissions for the website.
+
+### Problem 7 — Wrong Meta application
+
+What the client sees:
+
+The website and Meta app do not seem to match.
+
+What it usually means:
+
+The developer may be testing a different app than the one the business believes is active.
+
+What the client can check:
+
+- App name
+- App ID
+- Account used for the app
+- Current website URL
+
+When to contact the developer:
+
+Ask the developer to confirm which Meta app is connected to the website.
 
 ## Security
 
-### Identifier
+Safe identifier:
 
-```text
 App ID
-```
 
-This identifies your Meta application. Your developer may need it as `FACEBOOK_CLIENT_ID`.
+Sensitive values:
 
-### Sensitive credential
-
-```text
 App Secret
-Facebook access tokens
+Access tokens
 User access tokens
 Passwords
 2FA codes
 Recovery codes
-```
 
-Keep sensitive credentials private.
+Never share sensitive values publicly.
 
-Never put them into GitHub documentation, public issues, screenshots, public comments, or unprotected shared documents.
+Never ask users to publish:
 
-## Common Problems
+- App Secret
+- tokens
+- passwords
+- recovery data
 
-### Problem 1 — Invalid OAuth Redirect URI
+Only official app credentials and secure transfer methods should be used.
 
-Likely causes:
+## FAQ
 
-- Redirect URI does not exactly match
-- Wrong domain
-- Wrong path
-- `http` / `https` mismatch
-- Production vs localhost mismatch
+### What is a Facebook App ID?
 
-Ask your developer to compare the exact URL used by the website with the Valid OAuth Redirect URI configured in Meta.
+It is the identifier for the Meta app. Your developer may use it as FACEBOOK_CLIENT_ID.
 
-### Problem 2 — Facebook Login works for developer but not normal users
+### Is Facebook App ID the same as Facebook user ID?
 
-Possible causes:
+No. A Facebook user ID identifies a person. A Facebook App ID identifies the Meta app used by the website.
 
-- App still in Development mode
-- User is not an approved role/tester
-- App configuration incomplete
-- Required review/approval not completed
+### Is Facebook App ID the same as App Secret?
 
-Ask the developer whether the app is still being tested or is ready for Live mode.
+No. They are different values.
 
-### Problem 3 — App is not available
+App ID
+→ identifies the Meta application
 
-Check:
+App Secret
+→ sensitive credential used by the application/server
 
-- App mode
-- Required configuration
-- Privacy Policy
-- App Review where applicable
-- Business verification where applicable
+### Do I need a Facebook Page?
 
-Do not assume business verification or app review is always required. Check what Meta is asking for in the current app dashboard.
+Not always. A basic Facebook Login setup is about the Meta app, not necessarily a Facebook Page. If a Page is required, the developer will tell you.
 
-### Problem 4 — App ID is not working
+### Do I need Meta Business Manager?
 
-Possible causes:
+Not always. It depends on the app, business, and Meta requirements. Basic customer login may not require a full business-setup workflow.
 
-- Wrong App ID
-- Wrong Meta application
-- Website using a different App ID
-- Configuration mismatch
+### Do I need Business Verification?
 
-Copy the App ID again from the Meta app dashboard and confirm it with your developer.
+Not always. Business verification depends on the app, features, permissions, and Meta requirements.
 
-### Problem 5 — OAuth error
+### Does Facebook Login require App Review?
 
-Ask the developer for the exact error message and screenshot.
+Not always. It depends on the permissions and features the app requests and whether public users will use it.
 
-OAuth errors are often caused by a mismatch between the website configuration and the Meta Developer configuration.
+### Why does Facebook Login work for me but not other users?
 
-The client should not debug backend code unless the developer asks for specific information.
+The app may still be in Development mode, or only people with the right app role or testing access may be able to use it.
 
-## Optional: Facebook Login for Business
+### What is an OAuth Redirect URI?
 
-Facebook Login for Business is different from basic consumer Facebook Login.
+It is the exact address where Facebook sends the user back after login.
 
-Use it only if your website, product, or developer specifically requires business-oriented Facebook authentication features.
+Example only:
 
-For a normal website where users log in with their Facebook account, basic Facebook Login is usually the relevant product/use case.
+https://example.com/auth/facebook/callback
 
-## Optional: Meta Business Verification
+Do not guess it. Ask the developer for the exact value.
 
-Some Meta products, features, permissions, or production requirements may require business verification.
+### Can I use localhost during development?
 
-Do not assume business verification is always required for every Facebook Login setup.
+Developers may use localhost for local testing, but production setups usually use a real public domain. Do not add localhost unless the developer specifically asks for it.
 
-If Meta asks for business verification, the business owner or authorized company representative should handle it.
+### What should I send to my developer?
 
-## Optional: App Review
+Usually:
 
-Additional permissions or products may require App Review.
+FACEBOOK_CLIENT_ID=YOUR_META_APP_ID
 
-App Review is Meta's process for checking whether an app is allowed to use certain permissions or features.
+If the developer specifically asks for the App Secret or another credential, provide it only through the secure method they give you.
 
-Ask your developer which permissions are required before submitting anything for review.
+## Final checklist
 
-## Final Checklist
+- [ ] Meta account available
+- [ ] Developer access completed
+- [ ] Meta application created
+- [ ] Facebook Login configured
+- [ ] Website configured
+- [ ] Required domain configuration completed
+- [ ] Privacy Policy configured if required
+- [ ] Terms URL configured if required
+- [ ] OAuth Redirect URI configured
+- [ ] App ID copied
+- [ ] FACEBOOK_CLIENT_ID prepared
+- [ ] App Secret requirement confirmed
+- [ ] Development/Live status checked
+- [ ] App Review requirements checked
+- [ ] Business verification requirements checked
+- [ ] Developer received required values securely
 
-```text
-[ ] Facebook/Meta account available
-[ ] Meta developer access completed
-[ ] Meta app created
-[ ] Facebook Login added/configured
-[ ] Website URL configured
-[ ] App Domain configured if required
-[ ] Privacy Policy configured
-[ ] Terms URL configured if required
-[ ] OAuth Redirect URI configured
-[ ] App ID copied
-[ ] FACEBOOK_CLIENT_ID prepared
-[ ] App Secret identified if developer requires it
-[ ] App mode checked
-[ ] Testing completed
-[ ] Required review/verification completed if applicable
-[ ] Developer received required credentials securely
-```
+## Official Meta references
 
-## Official Meta Documentation
+- Meta for Developers: https://developers.facebook.com/
+- Meta app dashboard: https://developers.facebook.com/apps/
+- Create an app: https://developers.facebook.com/docs/development/create-an-app/
+- Facebook Login: https://developers.facebook.com/docs/facebook-login/
+- Facebook Login for the Web: https://developers.facebook.com/docs/facebook-login/web/
+- App Review: https://developers.facebook.com/docs/app-review/
+- App roles: https://developers.facebook.com/docs/development/build-and-test/app-roles/
+- Business Verification: https://developers.facebook.com/docs/development/release/business-verification/
 
-- [Meta for Developers](https://developers.facebook.com/)
-- [Meta app dashboard](https://developers.facebook.com/apps/)
-- [Create an app](https://developers.facebook.com/docs/development/create-an-app/)
-- [Facebook Login documentation](https://developers.facebook.com/docs/facebook-login/)
-- [Facebook Login for the Web](https://developers.facebook.com/docs/facebook-login/web/)
-- [Manually Build a Login Flow](https://developers.facebook.com/docs/facebook-login/guides/advanced/manual-flow/)
-- [App Roles](https://developers.facebook.com/docs/development/build-and-test/app-roles/)
-- [App Modes](https://developers.facebook.com/docs/development/release/)
-- [App Review](https://developers.facebook.com/docs/app-review/)
-- [Business Verification](https://developers.facebook.com/docs/development/release/business-verification/)
-
-## Related Guides
+## Related guides
 
 [Back to Social Login Setup Guide](../../README.md)
 
